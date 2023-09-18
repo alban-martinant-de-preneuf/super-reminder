@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class User {
+class User extends DbConnection {
 
     private string $email;
     private string $password;
@@ -16,7 +16,7 @@ class User {
         string $password = '',
         ?string $firstname = null,
         ?string $lastname = null,
-        string $role = 'ROLE_USER',
+        string $role = 'USER',
         ?int $id = null
     ) {
         $this->email = $email;
@@ -25,6 +25,7 @@ class User {
         $this->lastname = $lastname;
         $this->role = $role;
         $this->id = $id;
+        parent::__construct();
     }
 
     public function getEmail(): string {
@@ -81,5 +82,16 @@ class User {
         return $this;
     }
 
-    
+    public function register(): User {
+        $sqlQuery = "INSERT INTO user (email, password, firstname, lastname, role) VALUES (:email, :password, :firstname, :lastname, :role)";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':email', $this->email, \PDO::PARAM_STR);
+        $statment->bindValue(':password', $this->password, \PDO::PARAM_STR);
+        $statment->bindValue(':firstname', $this->firstname, \PDO::PARAM_STR);
+        $statment->bindValue(':lastname', $this->lastname, \PDO::PARAM_STR);
+        $statment->bindValue(':role', $this->role, \PDO::PARAM_STR);
+        $statment->execute();
+        $this->id = $this->pdo->lastInsertId();
+        return $this;
+    }
 }
