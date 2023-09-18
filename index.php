@@ -1,11 +1,28 @@
 <?php
+
+session_start();
+
 require_once 'vendor/autoload.php';
+
+use App\Controller\ViewController;
+
 $router = new AltoRouter();
 
 $router->setBasePath('/super-reminder');
+
 $router->map('GET', '/', function () {
-    echo "OK";
+    $viewController = new ViewController();
 }, 'home');
+
+$router->map('GET', '/login', function () {
+    $viewController = new ViewController();
+    $viewController->getLoginForm();
+}, 'login');
+
+$router->map('GET', '/register', function () {
+    $viewController = new ViewController();
+    $viewController->getRegisterForm();
+}, 'register');
 
 // match current request url
 $match = $router->match();
