@@ -10,14 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../public/css/style.css">
 
 
     <title> Home Page | super-reminder</title>
 
 <body>
     <?php require_once("includes/header.php"); ?>
-    <h1> Welcome to super-reminder App </h1>
+    <main>
+        <h1> Welcome to super-reminder App </h1>
+    </main>
 
 </body>
 

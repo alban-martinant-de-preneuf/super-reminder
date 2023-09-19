@@ -21,6 +21,16 @@ $router->map('GET', '/login', function () {
     $viewController->getLoginForm();
 }, 'login');
 
+$router->map('GET', '/registerForm', function () {
+    $viewController = new ViewController();
+    $viewController->getRegisterForm();
+}, 'registerForm');
+
+$router->map('GET', '/loginForm', function () {
+    $viewController = new ViewController();
+    $viewController->getLoginForm();
+}, 'loginForm');
+
 $router->map('GET', '/register', function () {
     $viewController = new ViewController();
     $viewController->getRegisterForm();
