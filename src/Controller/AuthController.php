@@ -58,9 +58,10 @@ class AuthController
             die();
         }
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $user = new User($email, $hashedPassword);
-        $authModel = new AuthModel($user);
-        if (!$authModel->isRegisted()) {
+        $authModel = new AuthModel(new User($email, $hashedPassword));
+        if ($authModel->isRegisted()) {
+            $user = $authModel->updateUser();
+        } else {
             echo 'Email not found';
             die();
         }
@@ -68,6 +69,6 @@ class AuthController
             echo 'Invalid password';
             die();
         }
-        $_SESSION['user'] = $user;
+        $_SESSION['user'] = serialize($user);
     }
 }

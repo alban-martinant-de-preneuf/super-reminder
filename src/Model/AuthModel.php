@@ -49,4 +49,19 @@ class AuthModel extends DbConnection {
         }
         return false;
     }
+
+    public function updateUser(): User {
+        $sqlQuery = ("SELECT * FROM user WHERE email = :email");
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':email', $this->user->getEmail(), \PDO::PARAM_STR);
+        $statment->execute();
+        $result = $statment->fetch(\PDO::FETCH_ASSOC);
+        $this->user->setFirstname($result['firstname']);
+        $this->user->setLastname($result['lastname']);
+        $this->user->setRole($result['role']);
+        $this->user->setId($result['id']);
+
+        return $this->user;
+    }
+    
 }
