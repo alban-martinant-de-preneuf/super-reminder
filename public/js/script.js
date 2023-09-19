@@ -6,8 +6,9 @@ function register(){
     let comfirmPassword = document.getElementById('passwordComfirmation').value;
 
     if(password === comfirmPassword){
-        alert('')
+        alert('Registration is successeful ' + firstName);
     }
 }
+
 
 
