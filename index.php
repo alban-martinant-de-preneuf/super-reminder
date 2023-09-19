@@ -2,6 +2,8 @@
 
 session_start();
 
+
+
 require_once 'vendor/autoload.php';
 
 use App\Controller\ViewController;
@@ -47,6 +49,11 @@ $router->map('POST', '/register', function () {
     $authController = new AuthController();
     $authController->register($_POST);
 }, 'registerPost');
+
+$router->map('GET', '/logout', function () {
+    session_destroy();
+    header('Location: /super-reminder');
+}, 'logout');
 
 // for testing 
 

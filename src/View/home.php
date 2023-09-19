@@ -13,14 +13,14 @@
 
     <script src="/super-reminder/public/js/script.js" defer></script>
     <title> Home Page | super-reminder</title>
+</head>
 
 <body>
     <?php require_once("includes/header.php"); ?>
     
     <div id="wrapper">
         <h1> Welcome to super-reminder App </h1>
+        <img src="/super-reminder/public/img/todo3.gif" alt="Home Gif" width="300" height="300">
     </div>
-
 </body>
-
-
+</html>
