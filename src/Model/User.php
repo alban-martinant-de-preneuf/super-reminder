@@ -2,7 +2,8 @@
 
 namespace App\Model;
 
-class User extends DbConnection {
+class User
+{
 
     private string $email;
     private string $password;
@@ -25,73 +26,71 @@ class User extends DbConnection {
         $this->lastname = $lastname;
         $this->role = $role;
         $this->id = $id;
-        parent::__construct();
     }
 
-    public function getEmail(): string {
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
-    public function getPassword(): string {
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function getFirstname(): ?string {
+    public function getFirstname(): ?string
+    {
         return $this->firstname;
     }
 
-    public function getLastname(): ?string {
+    public function getLastname(): ?string
+    {
         return $this->lastname;
     }
 
-    public function getRole(): string {
+    public function getRole(): string
+    {
         return $this->role;
     }
 
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function setEmail(string $email): User {
+    public function setEmail(string $email): User
+    {
         $this->email = $email;
         return $this;
     }
 
-    public function setPassword(string $password): User {
+    public function setPassword(string $password): User
+    {
         $this->password = $password;
         return $this;
     }
 
-    public function setFirstname(?string $firstname): User {
+    public function setFirstname(?string $firstname): User
+    {
         $this->firstname = $firstname;
         return $this;
     }
 
-    public function setLastname(?string $lastname): User {
+    public function setLastname(?string $lastname): User
+    {
         $this->lastname = $lastname;
         return $this;
     }
 
-    public function setRole(string $role): User {
+    public function setRole(string $role): User
+    {
         $this->role = $role;
         return $this;
     }
 
-    public function setId(?int $id): User {
+    public function setId(?int $id): User
+    {
         $this->id = $id;
-        return $this;
-    }
-
-    public function register(): User {
-        $sqlQuery = "INSERT INTO user (email, password, firstname, lastname, role) VALUES (:email, :password, :firstname, :lastname, :role)";
-        $statment = $this->pdo->prepare($sqlQuery);
-        $statment->bindValue(':email', $this->email, \PDO::PARAM_STR);
-        $statment->bindValue(':password', $this->password, \PDO::PARAM_STR);
-        $statment->bindValue(':firstname', $this->firstname, \PDO::PARAM_STR);
-        $statment->bindValue(':lastname', $this->lastname, \PDO::PARAM_STR);
-        $statment->bindValue(':role', $this->role, \PDO::PARAM_STR);
-        $statment->execute();
-        $this->id = $this->pdo->lastInsertId();
         return $this;
     }
 }
