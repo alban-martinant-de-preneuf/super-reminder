@@ -5,6 +5,7 @@ session_start();
 require_once 'vendor/autoload.php';
 
 use App\Controller\ViewController;
+use App\Controller\AuthController;
 
 $router = new AltoRouter();
 
@@ -25,16 +26,27 @@ $router->map('GET', '/register', function () {
     $viewController->getRegisterForm();
 }, 'register');
 
-// for testing 
-
-$router->map('POST', '/register', function () {
-    echo 'register : POST';
-    var_dump($_POST);
+$router->map('POST', '/login', function () {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $user = new \App\Model\User($email, $password);
-    $user->register();
+    $authController = new AuthController();
+    $authController->login($email, $password);
+}, 'loginPost');
+
+$router->map('POST', '/register', function () {
+    $authController = new AuthController();
+    $authController->register($_POST);
 }, 'registerPost');
+
+// for testing 
+
+$router->map('GET', '/test', function () {
+    if (isset($_SESSION['user'])) {
+        var_dump($_SESSION['user']);
+    } else {
+        echo 'no user connected';
+    }
+}, 'test');
 
 // match current request url
 $match = $router->match();
