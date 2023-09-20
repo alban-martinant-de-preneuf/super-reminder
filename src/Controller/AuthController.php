@@ -10,9 +10,7 @@ class AuthController
 
     public function register(array $args): void
     {
-        var_dump($args);
         foreach ($args as &$arg) {
-            var_dump($arg);
             $arg = htmlspecialchars($arg);
         }
 
@@ -24,51 +22,56 @@ class AuthController
         $role = isset($_POST['role']) ? $_POST['role'] : 'USER';
 
         if ($password !== $password2) {
-            echo 'Passwords don\'t match';
+            echo json_encode(['message' => 'Passwords don\'t match']);
             die();
         }
-        // if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}$/', $password)) {
-        //     echo 'Invalid password';
-        //     die();
-        // }
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo 'Invalid email';
+            echo json_encode(['message' => 'Invalid email']);
             die();
         }
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $user = new User($email, $hashedPassword, $firstname, $lastname, $role);
         $authModel = new AuthModel($user);
         if ($authModel->isRegisted()) {
-            echo 'Email already exists';
+            echo json_encode(['message' => 'Email already exists']);
             die();
         }
+
         $password = password_hash($password, PASSWORD_DEFAULT);
         $authModel->register();
+        echo json_encode(['message' => 'Registered']);
     }
 
     public function login(string $email, string $password): void
     {
         $args = func_get_args();
         foreach ($args as &$arg) {
-            echo $arg;
             $arg = htmlspecialchars($arg);
         }
+
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo 'Invalid email';
+            echo json_encode(['message' => 'Invalid email']);
             die();
         }
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $authModel = new AuthModel(new User($email, $hashedPassword));
         if ($authModel->isRegisted()) {
             $user = $authModel->updateUser();
         } else {
-            echo 'Email not found';
+            echo json_encode(['message' => 'Invalid email or password']);
             die();
         }
+
         if (!password_verify($password, $user->getPassword())) {
-            echo 'Invalid password';
+            echo json_encode(['message' => 'Invalid email or password']);
             die();
         }
+
         $_SESSION['user'] = serialize($user);
+        echo json_encode(['message' => 'Connected']);
     }
 }
+

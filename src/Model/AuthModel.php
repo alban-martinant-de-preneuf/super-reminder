@@ -34,7 +34,6 @@ class AuthModel extends DbConnection {
         $statment->bindValue(':email', $this->user->getEmail(), \PDO::PARAM_STR);
         $statment->execute();
         $result = $statment->fetch(\PDO::FETCH_COLUMN);
-        var_dump($result);
         if ($result) {
             return true;
         }
