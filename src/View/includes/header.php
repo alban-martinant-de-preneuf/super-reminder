@@ -2,9 +2,9 @@
 
     <header>
         <nav>
-            <a href="profil.php">Profil</a>
-            <a href="todolist.php">To do list</a>
-            <a href="login.php?deco">Déconnection</a>
+            <span><a href="">Profil</a></span>
+            <span><a href="">To do list</a></span>
+            <span id="deco_btn"><a href="">Déconnection</a></span>
         </nav>
     </header>
 

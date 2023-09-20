@@ -59,7 +59,7 @@ $router->map('GET', '/logout', function () {
 
 $router->map('GET', '/test', function () {
     if (isset($_SESSION['user'])) {
-        var_dump($_SESSION['user']);
+        var_dump(unserialize($_SESSION['user']));
     } else {
         echo 'no user connected';
     }

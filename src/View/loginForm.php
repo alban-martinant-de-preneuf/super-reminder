@@ -3,7 +3,7 @@
 
     <h1>Login Form</h1>
 
-    <form id="registerForm">
+    <form id="login_form">
 
         <label for="registerEmail">Email</label>
         <input name="email" type="text" id="registerEmail" placeholder="Enter your email"><br><br>
@@ -11,6 +11,7 @@
         <label for="registerPassword">Password:</label>
         <input name="password" type="password" id="registerPassword" placeholder="Enter your password"><br><br>
 
+        <p id="message"></p>
         <button id="login_submit">Login</button>
 
     </form>
