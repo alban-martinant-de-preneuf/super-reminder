@@ -24,3 +24,4 @@ class ViewController
         require_once 'src/View/listsPages.php';
     }
 }
+
