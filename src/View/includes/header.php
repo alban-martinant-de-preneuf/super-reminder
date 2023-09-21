@@ -1,6 +1,7 @@
 <?php if (isset($_SESSION['user'])) : ?>
 
-    <header>
+    <link rel="stylesheet" href="/super-reminder/public/css/style.css">
+    
         <nav>
             <span id="profil_btn"><a href="">Profil</a></span>
             <span id="todo_btn"><a href="">To do list</a></span>
@@ -8,7 +9,7 @@
         </nav>
     </header>
 
-    <h1>Welcome
+    <h1> Welcome
         <b>
             <?php
             $user = unserialize($_SESSION['user']);
@@ -24,11 +25,14 @@
     <header>
         <nav>
 
-            <button class="material-symbols-outlined">home</button>
-            <button id="get_login_form" class="material-symbols-outlined">Se connecter </button>
-            <button id="get_register_form" class="material-symbols-outlined">Créer un compte</button>
+            <span><a class="material-symbols-outlined">Home</a></button>
+            <span><a id="get_login_form" class="material-symbols-outlined">Se connecter</a></span>
+            <span><a id="get_register_form" class="material-symbols-outlined">Créer un compte</a></span>
 
         </nav>
+ 
+        <img src="/super-reminder/public/img/todo3.gif" id="girl" alt="Home Gif" width="300" height="300">
+        <h1>Welcome to super-reminder!</h1>
     </header>
 
 <?php endif ?>

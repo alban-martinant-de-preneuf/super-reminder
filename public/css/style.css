@@ -16,6 +16,11 @@ body, html {
       display: flex;
       width: 600px;
   }
+
+
+   #girl{
+    align-items: center;
+  }
   
   nav {
       display: flex;
@@ -51,6 +56,33 @@ body, html {
   nav a .material-symbols-outlined{
       margin-right: 12px;
   }
+
+/* Your existing CSS */
+
+/* Add this section for responsive styles */
+@media (max-width: 768px) {
+    header {
+      width: 100%; /* Make the header full width on smaller screens */
+    }
+  
+    nav {
+      display: none; /* Initially hide the navigation */
+      flex-direction: column; /* Align items in a column */
+      height: auto; /* Adjust the height based on content */
+      padding: 8px; /* Adjust padding for spacing */
+    }
+  
+    nav a {
+      padding: 12px; /* Adjust padding for spacing */
+      border-radius: 0; /* Remove border-radius to have straight edges */
+    }
+  
+    nav.active {
+      display: flex; /* Show the navigation when active class is added */
+    }
+  }
+  
+  
   
   a[active] {
       font-weight: bold;
@@ -156,4 +188,5 @@ body, html {
   footer a:hover {
       color: rgb(207, 86, 86);
   }
-  
+ 
+

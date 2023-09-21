@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/super-reminder/public/css/style.css">
+    
 
     <script src="/super-reminder/public/js/script.js" defer></script>
     <script src="https://kit.fontawesome.com/247a482759.js" crossorigin="anonymous"></script>
@@ -20,8 +21,10 @@
     <?php require_once("includes/header.php"); ?>
     
     <div id="wrapper">
-        <h1> Welcome to super-reminder App </h1>
-        <img src="/super-reminder/public/img/todo3.gif" alt="Home Gif" width="300" height="300">
+       
+             <h1></h1>
+            
+        
     </div>
 </body>
 </html>
