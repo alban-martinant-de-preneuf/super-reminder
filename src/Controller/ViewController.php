@@ -18,4 +18,9 @@ class ViewController
     {
         require_once 'src/View/registerForm.php';
     }
+
+    public function getListPage()
+    {
+        require_once 'src/View/listsPages.php';
+    }
 }

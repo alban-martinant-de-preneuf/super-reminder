@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/super-reminder/public/css/style.css">
 
     <script src="/super-reminder/public/js/script.js" defer></script>
+    <script src="https://kit.fontawesome.com/247a482759.js" crossorigin="anonymous"></script>
     <title> Home Page | super-reminder</title>
 </head>
 

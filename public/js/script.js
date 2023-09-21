@@ -1,23 +1,10 @@
-// function register(){
-//     let firstName = document.getElementById('registerFirstName').value;
-//     let lastName = document.getElementById('registerLastName').value;
-//     let email = document.getElementById('registerEmail').value;
-//     let password = document.getElementById('registerPassword').value;
-//     let comfirmPassword = document.getElementById('passwordComfirmation').value;
-
-//     if(password === comfirmPassword){
-//         alert('registration successfull')
-//     }
-
-//     const registerSubmit = document.getElementById('register_submit');
-
-//     registerSubmit.addEventListener('click', register)
-// }
-
 const wrapper = document.getElementById('wrapper')
+
 const getRegisterFormBtn = document.getElementById('get_register_form')
 const getLoginFormBtn = document.getElementById('get_login_form')
 const decoBtn = document.getElementById('deco_btn')
+
+const todoBtn = document.getElementById('todo_btn')
 
 
 async function getRegisterForm() {
@@ -44,6 +31,21 @@ async function logout(e) {
     }
 }
 
+async function getListPage(e) {
+    e.preventDefault()
+    const res = await fetch('/super-reminder/list_page')
+    const data = await res.text()
+    wrapper.innerHTML = data
+    loadNewScript('todo.js')
+}
+
+function loadNewScript(script) {
+    const scriptTag = document.createElement('script')
+    scriptTag.src = '/super-reminder/public/js/' + script
+    scriptTag.defer = true
+    document.head.appendChild(scriptTag)
+}
+
 async function activeSubmit(form, route) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -67,7 +69,8 @@ async function activeSubmit(form, route) {
     })
 }
 
-
 getRegisterFormBtn?.addEventListener('click', getRegisterForm)
 getLoginFormBtn?.addEventListener('click', getLoginForm)
 decoBtn?.addEventListener('click', logout)
+
+todoBtn?.addEventListener('click', getListPage)

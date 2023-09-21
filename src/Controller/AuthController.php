@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\User;
-use App\Model\AuthModel;
+use App\Model\UserModel;
 
 class AuthController
 {
@@ -33,7 +33,7 @@ class AuthController
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $user = new User($email, $hashedPassword, $firstname, $lastname, $role);
-        $authModel = new AuthModel($user);
+        $authModel = new UserModel($user);
         if ($authModel->isRegisted()) {
             echo json_encode(['message' => 'Email already exists']);
             die();
@@ -57,7 +57,7 @@ class AuthController
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $authModel = new AuthModel(new User($email, $hashedPassword));
+        $authModel = new UserModel(new User($email, $hashedPassword));
         if ($authModel->isRegisted()) {
             $user = $authModel->updateUser();
         } else {

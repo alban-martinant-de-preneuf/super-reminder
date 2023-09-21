@@ -2,8 +2,8 @@
 
     <header>
         <nav>
-            <span><a href="">Profil</a></span>
-            <span><a href="">To do list</a></span>
+            <span id="profil_btn"><a href="">Profil</a></span>
+            <span id="todo_btn"><a href="">To do list</a></span>
             <span id="deco_btn"><a href="">Déconnection</a></span>
         </nav>
     </header>

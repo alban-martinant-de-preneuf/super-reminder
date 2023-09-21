@@ -8,6 +8,7 @@ require_once 'vendor/autoload.php';
 
 use App\Controller\ViewController;
 use App\Controller\AuthController;
+use App\Controller\DataController;
 
 $router = new AltoRouter();
 
@@ -55,14 +56,26 @@ $router->map('GET', '/logout', function () {
     header('Location: /super-reminder');
 }, 'logout');
 
+$router->map('GET', '/list_page', function () {
+    $viewController = new ViewController();
+    $viewController->getListPage();
+}, 'list_page');
+
+$router->map('GET','/lists', function () {
+    $dataController = new DataController();
+    $dataController->getUserTaskLists();
+}, 'lists');
+
+$router->map('POST', '/addList', function () {
+    $dataController = new DataController();
+    $dataController->addList($_POST['title']); // todo: check if title is set
+}, 'addList');
+
 // for testing 
 
 $router->map('GET', '/test', function () {
-    if (isset($_SESSION['user'])) {
-        var_dump(unserialize($_SESSION['user']));
-    } else {
-        echo 'no user connected';
-    }
+    $dataController = new DataController();
+    $dataController->getUserTaskLists();
 }, 'test');
 
 // match current request url
