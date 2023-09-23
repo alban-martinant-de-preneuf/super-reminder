@@ -74,6 +74,11 @@ $router->map('GET', '/tasks/[i:idList]', function ($idList) {
 $router->map('POST', '/lists/add', function () {
     $dataController = new DataController();
     $dataController->addList($_POST['title']);
+}, 'addList');
+
+$router->map('POST', '/tasks/add', function () {
+    $dataController = new DataController();
+    $dataController->addTask($_POST['title'], $_POST['list_id']);
 }, 'addTask');
 
 // for testing 

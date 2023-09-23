@@ -21,26 +21,82 @@ async function getTasks(listId) {
 
 function displayLists(lists) {
 
-    console.log('displayLists()')
     lists.forEach(async (list) => {
-        const tasks = await getTasks(list.id)
         const listDiv = document.createElement('div')
         listDiv.classList.add('list')
         listDiv.id = "list_" + list.id
+
         const listTitle = document.createElement('h2')
         listTitle.textContent = list.title
         listDiv.appendChild(listTitle)
+        
+        listDiv.appendChild(addTaskForm(list.id))
+
         const ulElement = document.createElement('ul')
         ulElement.id = "ul_" + list.id
         listDiv.appendChild(ulElement)
+
         listContainer.appendChild(listDiv)
-        tasks.forEach(task => {
-            const liElement = document.createElement('li')
-            liElement.textContent = task.title
-            ulElement.appendChild(liElement)
-        })
+
+        const tasks = await getTasks(list.id)
+
+        fillWithLiTasks(tasks, ulElement)
     })
-    console.log(listContainer)
+}
+
+function fillWithLiTasks(tasks, ulElement) {
+    tasks.forEach(task => {
+        console.log(task)
+        const liElement = document.createElement('li')
+        liElement.textContent = task.title
+        ulElement.appendChild(liElement)
+    })
+}
+
+function addTaskForm(listId) {
+    console.log('addTaskForm()')
+    const form = document.createElement('form')
+    form.id = "add_task_form_" + listId
+    form.classList.add('add_task_form')
+
+    const inputTitle = document.createElement('input')
+    inputTitle.type = "text"
+    inputTitle.name = "title"
+    inputTitle.id = "title"
+    inputTitle.placeholder = "Title"
+    form.appendChild(inputTitle)
+
+    const inputListId = document.createElement('input')
+    inputListId.hidden = true
+    inputListId.type = "text"
+    inputListId.name = "list_id"
+    inputListId.id = "list_" + listId
+    inputListId.value = listId
+    form.appendChild(inputListId)
+
+    const submitBtn = document.createElement('button')
+    submitBtn.type = "submit"
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-plus"></i>'
+    form.appendChild(submitBtn)
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const formData = new FormData(form)
+        const res = await fetch('/super-reminder/tasks/add', {
+            method: 'POST',
+            body: formData,
+        })
+        const data = await res.json()
+        console.log(data)
+        if (data.message === 'Task added') {
+            const ulElement = document.getElementById('ul_' + listId)
+            const liElement = document.createElement('li')
+            liElement.textContent = data.title
+            ulElement.appendChild(liElement)
+        }
+    })
+
+    return form
 }
 
 async function addList(e) {

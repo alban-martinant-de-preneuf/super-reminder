@@ -39,4 +39,22 @@ class DataController {
         $tasks = $userModel->getTasks($idList);
         echo json_encode($tasks);
     }
+
+    public function addTask(string $title, int $idList) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isListOwner($idList)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $userModel->createTask($title, $idList);
+        echo json_encode([
+            'message' => 'Task added',
+            'title' => $title
+        ]);
+    }
 }

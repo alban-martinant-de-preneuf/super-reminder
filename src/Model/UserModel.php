@@ -64,18 +64,6 @@ class UserModel extends DbConnection {
     }
 
     public function getLists(): array {
-    //     $sqlQuery = ("SELECT 
-    //     list.id AS id_list,
-    //     list.title AS title_list,
-    //     task.id AS id_task,
-    //     task.state AS state_task,
-    //     task.end_date AS end_date_task,
-    //     task.priority AS priority_task,
-    //     task.title AS title_task
-    //     FROM list 
-    //     INNER JOIN task ON list.id = task.id_list
-    //     WHERE list.id_user = :id_user"
-    // );
         $sqlQuery = ("SELECT * FROM list WHERE id_user = :id_user");
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
@@ -100,6 +88,30 @@ class UserModel extends DbConnection {
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->execute();
+    }
+
+    public function isListOwner(int $idList): bool {
+        $sqlQuery = ("SELECT COUNT(*)
+            FROM list 
+            WHERE id_user = :id_user AND id = :id_list"
+        );
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+        $result = $statment->fetch(\PDO::FETCH_COLUMN);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    public function createTask(string $title, int $idList): void {
+        $sqlQuery = "INSERT INTO task (title, id_list) VALUES (:title, :id_list)";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':title', $title, \PDO::PARAM_STR);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
         $statment->execute();
     }
     
