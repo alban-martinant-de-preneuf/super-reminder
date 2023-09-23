@@ -19,29 +19,38 @@ async function getTasks(listId) {
     return data
 }
 
-function displayLists(lists) {
+// function displayLists(lists) {
 
-    lists.forEach(async (list) => {
-        const listDiv = document.createElement('div')
-        listDiv.classList.add('list')
-        listDiv.id = "list_" + list.id
+//     lists.forEach(list => displayList(list))
+// }
 
-        const listTitle = document.createElement('h2')
-        listTitle.textContent = list.title
-        listDiv.appendChild(listTitle)
-        
-        listDiv.appendChild(addTaskForm(list.id))
+// //         const tasks = await getTasks(list.id)
 
-        const ulElement = document.createElement('ul')
-        ulElement.id = "ul_" + list.id
-        listDiv.appendChild(ulElement)
+// //         fillWithLiTasks(tasks, ulElement)
+// //     })
+// // }
 
-        listContainer.appendChild(listDiv)
+async function displayList(list) {
+    console.log(list)
+    const listDiv = document.createElement('div')
+    listDiv.classList.add('list')
+    listDiv.id = "list_" + list.id
 
-        const tasks = await getTasks(list.id)
+    const listTitle = document.createElement('h2')
+    listTitle.textContent = list.title
+    listDiv.appendChild(listTitle)
 
-        fillWithLiTasks(tasks, ulElement)
-    })
+    listDiv.appendChild(addTaskForm(list.id))
+
+    const ulElement = document.createElement('ul')
+    ulElement.id = "ul_" + list.id
+    listDiv.appendChild(ulElement)
+
+    listContainer.prepend(listDiv)
+
+    const tasks = await getTasks(list.id)
+
+    fillWithLiTasks(tasks, ulElement)
 }
 
 function fillWithLiTasks(tasks, ulElement) {
@@ -110,15 +119,12 @@ async function addList(e) {
     const data = await res.json()
     console.log(data)
     if (data.message === 'List added') {
-        getListPage()
-        getLists().then(lists => {
-            displayLists(lists)
-        })
+        displayList(data.list)
     }
 }
 
 getLists().then(lists => {
-    displayLists(lists)
+    lists.forEach(list => displayList(list))
 })
 
 formAddList.addEventListener('submit', (e) => addList(e))

@@ -25,8 +25,11 @@ class DataController {
         }
         $user = unserialize($_SESSION['user']);
         $userModel = new UserModel($user);
-        $userModel->createList($title);
-        echo json_encode(['message' => 'List added']);
+        $list = $userModel->createList($title);
+        echo json_encode([
+            'message' => 'List added',
+            'list' => $list
+        ]);
     }
 
     public function getTasks(int $idList) {
