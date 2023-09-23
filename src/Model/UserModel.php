@@ -2,7 +2,8 @@
 
 namespace App\Model;
 
-class UserModel extends DbConnection {
+class UserModel extends DbConnection
+{
 
     private User $user;
 
@@ -12,7 +13,8 @@ class UserModel extends DbConnection {
         parent::__construct();
     }
 
-    public function register(): User {
+    public function register(): User
+    {
         $sqlQuery = "INSERT INTO user (email, password, firstname, lastname, role) VALUES (:email, :password, :firstname, :lastname, :role)";
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':email', $this->user->getEmail(), \PDO::PARAM_STR);
@@ -25,7 +27,8 @@ class UserModel extends DbConnection {
         return $this->user;
     }
 
-    public function isRegisted(): bool {
+    public function isRegisted(): bool
+    {
         $sqlQuery = ("SELECT COUNT(*)
             FROM user 
             WHERE email = :email"
@@ -40,7 +43,8 @@ class UserModel extends DbConnection {
         return false;
     }
 
-    public function isConnect(): bool {
+    public function isConnect(): bool
+    {
         if (isset($_SESSION['user'])) {
             if ($_SESSION['user']->getEmail() === $this->user->getEmail()) {
                 return true;
@@ -49,7 +53,8 @@ class UserModel extends DbConnection {
         return false;
     }
 
-    public function updateUser(): User {
+    public function updateUser(): User
+    {
         $sqlQuery = ("SELECT * FROM user WHERE email = :email");
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':email', $this->user->getEmail(), \PDO::PARAM_STR);
@@ -63,33 +68,66 @@ class UserModel extends DbConnection {
         return $this->user;
     }
 
-    public function getLists(): array {
-        $sqlQuery = ("SELECT 
-        list.id AS id_list,
-        list.title AS title_list,
-        task.id AS id_task,
-        task.state AS state_task,
-        task.end_date AS end_date_task,
-        task.priority AS priority_task,
-        task.title AS title_task
-        FROM list 
-        INNER JOIN task ON list.id = task.id_list
-        WHERE list.id_user = :id_user"
-    );
+    public function getLists(): array
+    {
+        $sqlQuery = ("SELECT * FROM list WHERE id_user = :id_user");
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
         $statment->execute();
         $result = $statment->fetchAll(\PDO::FETCH_ASSOC);
-        
+
         return $result;
     }
 
-    public function createList(string $title): void {
+    public function getTasks(int $idList): array
+    {
+        $sqlQuery = ("SELECT * FROM task WHERE id_list = :id_list");
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+        $result = $statment->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function createList(string $title): array
+    {
         $sqlQuery = "INSERT INTO list (title, id_user) VALUES (:title, :id_user)";
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
         $statment->execute();
+        
+        return [
+            'id' => $this->pdo->lastInsertId(),
+            'title' => $title,
+            'id_user' => $this->user->getId()
+        ];
     }
-    
+
+    public function isListOwner(int $idList): bool
+    {
+        $sqlQuery = ("SELECT COUNT(*)
+            FROM list 
+            WHERE id_user = :id_user AND id = :id_list"
+        );
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+        $result = $statment->fetch(\PDO::FETCH_COLUMN);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    public function createTask(string $title, int $idList): void
+    {
+        $sqlQuery = "INSERT INTO task (title, id_list) VALUES (:title, :id_list)";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':title', $title, \PDO::PARAM_STR);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+    }
 }

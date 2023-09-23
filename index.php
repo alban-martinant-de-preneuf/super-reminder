@@ -63,19 +63,29 @@ $router->map('GET', '/list_page', function () {
 
 $router->map('GET','/lists', function () {
     $dataController = new DataController();
-    $dataController->getUserTaskLists();
+    $dataController->getUserLists();
 }, 'lists');
 
-$router->map('POST', '/addList', function () {
+$router->map('GET', '/tasks/[i:idList]', function ($idList) {
     $dataController = new DataController();
-    $dataController->addList($_POST['title']); // todo: check if title is set
+    $dataController->getTasks($idList);
+}, 'tasks');
+
+$router->map('POST', '/lists/add', function () {
+    $dataController = new DataController();
+    $dataController->addList($_POST['title']);
 }, 'addList');
+
+$router->map('POST', '/tasks/add', function () {
+    $dataController = new DataController();
+    $dataController->addTask($_POST['title'], $_POST['list_id']);
+}, 'addTask');
 
 // for testing 
 
 $router->map('GET', '/test', function () {
-    $dataController = new DataController();
-    $dataController->getUserTaskLists();
+    // $dataController = new DataController();
+    // $dataController->getUserTaskLists();
 }, 'test');
 
 // match current request url

@@ -6,18 +6,16 @@ use App\Model\UserModel;
 
 class DataController {
 
-    public function getUserTaskLists() {
+    public function getUserLists() {
         if (!isset($_SESSION['user'])) {
             echo json_encode(['message' => 'Not connected']);
             die();
         }
         $user = unserialize($_SESSION['user']);
         $userModel = new UserModel($user);
-        $userTaskLists = $userModel->getLists();
+        $userLists = $userModel->getLists();
 
-        // var_dump($userTaskLists);
-
-        echo json_encode($userTaskLists);
+        echo json_encode($userLists);
     }
 
     public function addList(string $title) : void {
@@ -27,7 +25,39 @@ class DataController {
         }
         $user = unserialize($_SESSION['user']);
         $userModel = new UserModel($user);
-        $userModel->createList($title);
-        echo json_encode(['message' => 'List added']);
+        $list = $userModel->createList($title);
+        echo json_encode([
+            'message' => 'List added',
+            'list' => $list
+        ]);
+    }
+
+    public function getTasks(int $idList) {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        $tasks = $userModel->getTasks($idList);
+        echo json_encode($tasks);
+    }
+
+    public function addTask(string $title, int $idList) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isListOwner($idList)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $userModel->createTask($title, $idList);
+        echo json_encode([
+            'message' => 'Task added',
+            'title' => $title
+        ]);
     }
 }
