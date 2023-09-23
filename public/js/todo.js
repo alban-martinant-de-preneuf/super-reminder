@@ -1,4 +1,3 @@
-console.log('todo.js charged !')
 
 const listContainer = document.getElementById('list_container')
 const addListBtn = document.getElementById('add_list_btn')
@@ -16,11 +15,12 @@ async function getTasks(listId) {
     console.log('getTasks()')
     const res = await fetch('/super-reminder/tasks/' + listId)
     const data = await res.json()
-    
+
     return data
 }
 
 function displayLists(lists) {
+
     console.log('displayLists()')
     lists.forEach(async (list) => {
         const tasks = await getTasks(list.id)
@@ -40,6 +40,7 @@ function displayLists(lists) {
             ulElement.appendChild(liElement)
         })
     })
+    console.log(listContainer)
 }
 
 async function addList(e) {
@@ -50,12 +51,18 @@ async function addList(e) {
         method: 'POST',
         body: formdata
     })
+    const data = await res.json()
+    console.log(data)
+    if (data.message === 'List added') {
+        getListPage()
+        getLists().then(lists => {
+            displayLists(lists)
+        })
+    }
 }
 
-
-formAddList.addEventListener('submit', addList)
-
 getLists().then(lists => {
-    console.log(lists)
     displayLists(lists)
 })
+
+formAddList.addEventListener('submit', (e) => addList(e))

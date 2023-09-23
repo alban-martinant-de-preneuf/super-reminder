@@ -5,5 +5,6 @@
     <button type="submit" id="add_list_btn">
         <i class="fa-solid fa-circle-plus"></i>
     </button>
+</form>
 
 <div id="list_container"></div>

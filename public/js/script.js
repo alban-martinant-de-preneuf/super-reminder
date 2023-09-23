@@ -31,19 +31,26 @@ async function logout(e) {
     }
 }
 
-async function getListPage(e) {
-    e.preventDefault()
-    const res = await fetch('/super-reminder/list_page')
-    const data = await res.text()
-    wrapper.innerHTML = data
-    loadNewScript('todo.js')
+async function getListPage() {
+    if (typeof listContainer === 'undefined') {
+        const res = await fetch('/super-reminder/list_page')
+        const data = await res.text()
+        wrapper.innerHTML = data
+        loadNewScript('todo.js', 'todo_script')
+        getLists().then(lists => {
+            displayLists(lists)
+        })
+    }
 }
 
-function loadNewScript(script) {
-    const scriptTag = document.createElement('script')
-    scriptTag.src = '/super-reminder/public/js/' + script
-    scriptTag.defer = true
-    document.head.appendChild(scriptTag)
+function loadNewScript(script, idScript) {
+    if (!document.getElementById(idScript)) {
+        const scriptTag = document.createElement('script')
+        scriptTag.src = '/super-reminder/public/js/' + script
+        scriptTag.id = idScript
+        scriptTag.defer = true
+        document.head.appendChild(scriptTag)
+    }
 }
 
 async function activeSubmit(form, route) {
@@ -73,4 +80,7 @@ getRegisterFormBtn?.addEventListener('click', getRegisterForm)
 getLoginFormBtn?.addEventListener('click', getLoginForm)
 decoBtn?.addEventListener('click', logout)
 
-todoBtn?.addEventListener('click', getListPage)
+todoBtn?.addEventListener('click', (e) => {
+    e.preventDefault()
+    getListPage()
+})

@@ -72,7 +72,6 @@ $router->map('GET', '/tasks/[i:idList]', function ($idList) {
 }, 'tasks');
 
 $router->map('POST', '/lists/add', function () {
-    var_dump($_POST);
     $dataController = new DataController();
     $dataController->addList($_POST['title']);
 }, 'addTask');
