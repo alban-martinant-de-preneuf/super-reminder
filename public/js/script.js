@@ -37,9 +37,6 @@ async function getListPage() {
         const data = await res.text()
         wrapper.innerHTML = data
         loadNewScript('todo.js', 'todo_script')
-        getLists().then(lists => {
-            displayLists(lists)
-        })
     }
 }
 
