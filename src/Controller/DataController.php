@@ -54,10 +54,10 @@ class DataController {
             echo json_encode(['message' => 'Not authorized']);
             die();
         }
-        $userModel->createTask($title, $idList);
+        $task = $userModel->createTask($title, $idList);
         echo json_encode([
             'message' => 'Task added',
-            'title' => $title
+            'task' => $task
         ]);
     }
 

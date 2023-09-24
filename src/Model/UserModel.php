@@ -122,13 +122,20 @@ class UserModel extends DbConnection
         return false;
     }
 
-    public function createTask(string $title, int $idList): void
+    public function createTask(string $title, int $idList): array
     {
         $sqlQuery = "INSERT INTO task (title, id_list) VALUES (:title, :id_list)";
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
         $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
         $statment->execute();
+
+        return [
+            'id' => (int) $this->pdo->lastInsertId(),
+            'title' => $title,
+            'state' => 'pending',
+            'id_list' => $idList
+        ];
     }
 
     public function updateTaskState(int $idTask, string $state): void

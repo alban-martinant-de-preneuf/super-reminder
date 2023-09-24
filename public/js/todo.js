@@ -42,30 +42,33 @@ async function displayList(list) {
 
 function fillWithLiTasks(tasks, ulElement) {
     tasks.forEach(task => {
-        console.log(task)
-        const liElement = document.createElement('li')
-        liElement.id = "task_" + task.id
-        liElement.classList.add('task')
-        if (task.state === 'completed') {
-            liElement.classList.add('completed')
-        }
-
-        const checkIcon = document.createElement('i')
-        checkIcon.classList.add('fa-solid', 'fa-check')
-        liElement.appendChild(checkIcon)
-
-        const spanElement = document.createElement('span')
-        spanElement.textContent = task.title
-        liElement.appendChild(spanElement)
-
-        const trashIcon = document.createElement('i')
-        trashIcon.classList.add('fa-regular', 'fa-trash-can')
-        liElement.appendChild(trashIcon)
-
-        addTaskEventListeners(liElement, task)
-
-        ulElement.appendChild(liElement)
+        ulElement.appendChild(createLiTask(task))
     })
+}
+
+function createLiTask(task) {
+    const liElement = document.createElement('li')
+    liElement.id = "task_" + task.id
+    liElement.classList.add('task')
+    if (task.state === 'completed') {
+        liElement.classList.add('completed')
+    }
+
+    const checkIcon = document.createElement('i')
+    checkIcon.classList.add('fa-solid', 'fa-check')
+    liElement.appendChild(checkIcon)
+
+    const spanElement = document.createElement('span')
+    spanElement.textContent = task.title
+    liElement.appendChild(spanElement)
+
+    const trashIcon = document.createElement('i')
+    trashIcon.classList.add('fa-regular', 'fa-trash-can')
+    liElement.appendChild(trashIcon)
+
+    addTaskEventListeners(liElement, task)
+
+    return liElement
 }
 
 function addTaskEventListeners(liElement, task) {
@@ -132,9 +135,7 @@ function addTaskForm(listId) {
         const data = await res.json()
         if (data.message === 'Task added') {
             const ulElement = document.getElementById('ul_' + listId)
-            const liElement = document.createElement('li')
-            liElement.textContent = data.title
-            ulElement.appendChild(liElement)
+            ulElement.appendChild(createLiTask(data.task))
         }
     })
 
