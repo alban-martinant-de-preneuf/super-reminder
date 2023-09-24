@@ -97,7 +97,7 @@ class UserModel extends DbConnection
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
         $statment->execute();
-        
+
         return [
             'id' => $this->pdo->lastInsertId(),
             'title' => $title,
@@ -143,6 +143,31 @@ class UserModel extends DbConnection
         $sqlQuery = "UPDATE task SET state = :state WHERE id = :id_task";
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':state', $state, \PDO::PARAM_INT);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
+        $statment->execute();
+    }
+
+    public function isTaskOwner(int $idTask): bool
+    {
+        $sqlQuery = ("SELECT COUNT(*)
+            FROM task
+            INNER JOIN list ON task.id_list = list.id
+            WHERE list.id_user = :id_user AND task.id = :id_task"
+        );
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->execute();
+        $result = $statment->fetch(\PDO::FETCH_COLUMN);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    public function deleteTask(int $idTask): void
+    {
+        $sqlQuery = "DELETE FROM task WHERE id = :id_task";
+        $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
         $statment->execute();
     }

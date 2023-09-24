@@ -79,4 +79,15 @@ class DataController {
             'state' => $state
         ]);
     }
+
+    public function deleteTask(int $idTask) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        $userModel->deleteTask($idTask);
+        echo json_encode(['message' => 'Task deleted']);
+    }
 }

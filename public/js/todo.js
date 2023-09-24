@@ -90,7 +90,7 @@ function addTaskEventListeners(liElement, task) {
     })
     // delete task
     liElement.querySelector('.fa-trash-can').addEventListener('click', async () => {
-        const res = await fetch('/super-reminder/tasks/' + task.id + '/delete', {
+        const res = await fetch('/super-reminder/tasks/delete/' + task.id, {
             method: 'DELETE'
         })
         const data = await res.json()
