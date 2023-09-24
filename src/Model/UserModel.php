@@ -156,6 +156,7 @@ class UserModel extends DbConnection
         );
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
         $statment->execute();
         $result = $statment->fetch(\PDO::FETCH_COLUMN);
         if ($result) {

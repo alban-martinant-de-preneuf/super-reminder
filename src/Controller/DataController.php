@@ -68,7 +68,7 @@ class DataController {
         }
         $user = unserialize($_SESSION['user']);
         $userModel = new UserModel($user);
-        if (!$userModel->isListOwner($task['id_list'])) {
+        if (!$userModel->isTaskOwner($task['id'])) {
             echo json_encode(['message' => 'Not authorized']);
             die();
         }
@@ -87,6 +87,10 @@ class DataController {
         }
         $user = unserialize($_SESSION['user']);
         $userModel = new UserModel($user);
+        if (!$userModel->isTaskOwner($idTask)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
         $userModel->deleteTask($idTask);
         echo json_encode(['message' => 'Task deleted']);
     }
