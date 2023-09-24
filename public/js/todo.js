@@ -30,6 +30,7 @@ async function displayList(list) {
 
     const ulElement = document.createElement('ul')
     ulElement.id = "ul_" + list.id
+    ulElement.classList.add('list_tasks')
     listDiv.appendChild(ulElement)
 
     listContainer.prepend(listDiv)
@@ -41,9 +42,58 @@ async function displayList(list) {
 
 function fillWithLiTasks(tasks, ulElement) {
     tasks.forEach(task => {
+        console.log(task)
         const liElement = document.createElement('li')
-        liElement.textContent = task.title
+        liElement.id = "task_" + task.id
+        liElement.classList.add('task')
+        if (task.state === 'completed') {
+            liElement.classList.add('completed')
+        }
+
+        const checkIcon = document.createElement('i')
+        checkIcon.classList.add('fa-solid', 'fa-check')
+        liElement.appendChild(checkIcon)
+
+        const spanElement = document.createElement('span')
+        spanElement.textContent = task.title
+        liElement.appendChild(spanElement)
+
+        const trashIcon = document.createElement('i')
+        trashIcon.classList.add('fa-regular', 'fa-trash-can')
+        liElement.appendChild(trashIcon)
+
+        addTaskEventListeners(liElement, task)
+
         ulElement.appendChild(liElement)
+    })
+}
+
+function addTaskEventListeners(liElement, task) {
+    // check task
+    liElement.querySelector('.fa-check').addEventListener('click', async () => {
+        const res = await fetch('/super-reminder/tasks/changestate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task)
+        })
+        const data = await res.json()
+        if (data.state === 'completed') {
+            liElement.classList.add('completed')
+            task.state = 'completed'
+        } else if (data.state === 'pending') {
+            liElement.classList.remove('completed')
+            task.state = 'pending'
+        }
+    })
+    // delete task
+    liElement.querySelector('.fa-trash-can').addEventListener('click', async () => {
+        const res = await fetch('/super-reminder/tasks/' + task.id + '/delete', {
+            method: 'DELETE'
+        })
+        const data = await res.json()
+        if (data.message === 'Task deleted') {
+            liElement.remove()
+        }
     })
 }
 
@@ -56,7 +106,7 @@ function addTaskForm(listId) {
     inputTitle.type = "text"
     inputTitle.name = "title"
     inputTitle.id = "title"
-    inputTitle.placeholder = "Title"
+    inputTitle.placeholder = "New task"
     form.appendChild(inputTitle)
 
     const inputListId = document.createElement('input')
@@ -69,7 +119,7 @@ function addTaskForm(listId) {
 
     const submitBtn = document.createElement('button')
     submitBtn.type = "submit"
-    submitBtn.innerHTML = '<i class="fa-solid fa-circle-plus"></i>'
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-plus add_task_icon"></i>'
     form.appendChild(submitBtn)
 
     form.addEventListener('submit', async (e) => {

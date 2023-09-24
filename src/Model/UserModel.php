@@ -130,4 +130,13 @@ class UserModel extends DbConnection
         $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
         $statment->execute();
     }
+
+    public function updateTaskState(int $idTask, string $state): void
+    {
+        $sqlQuery = "UPDATE task SET state = :state WHERE id = :id_task";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':state', $state, \PDO::PARAM_INT);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
+        $statment->execute();
+    }
 }

@@ -60,4 +60,23 @@ class DataController {
             'title' => $title
         ]);
     }
+
+    public function changeTaskState(array $task) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isListOwner($task['id_list'])) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $state = $task['state'] === 'pending' ? 'completed' : 'pending';
+        $userModel->updateTaskState($task['id'], $state);
+        echo json_encode([
+            'message' => 'State changed',
+            'state' => $state
+        ]);
+    }
 }
