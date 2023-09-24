@@ -92,6 +92,11 @@ $router->map('DELETE', '/tasks/delete/[i:id]', function ($id) {
     $dataController->deleteTask($id);
 }, 'deleteTask');
 
+$router->map('DELETE', '/lists/delete/[i:id]', function ($id) {
+    $dataController = new DataController();
+    $dataController->deleteList($id);
+}, 'deleteList');
+
 // for testing 
 
 $router->map('GET', '/test', function () {

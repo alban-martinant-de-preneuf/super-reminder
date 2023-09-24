@@ -22,6 +22,14 @@ async function displayList(list) {
     listDiv.classList.add('list')
     listDiv.id = "list_" + list.id
 
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('fa-solid', 'fa-xmark')
+    deleteIcon.addEventListener('click', () => {
+        deleteList(list.id, listDiv)
+    })
+
+    listDiv.appendChild(deleteIcon)
+
     const listTitle = document.createElement('h2')
     listTitle.textContent = list.title
     listDiv.appendChild(listTitle)
@@ -38,6 +46,16 @@ async function displayList(list) {
     const tasks = await getTasks(list.id)
 
     fillWithLiTasks(tasks, ulElement)
+}
+
+async function deleteList(listId, listDiv) {
+    const res = await fetch('/super-reminder/lists/delete/' + listId, {
+        method: 'DELETE'
+    })
+    const data = await res.json()
+    if (data.message === 'List deleted') {
+        listDiv.remove()
+    }
 }
 
 function fillWithLiTasks(tasks, ulElement) {

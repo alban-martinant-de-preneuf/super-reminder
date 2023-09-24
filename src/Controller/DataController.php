@@ -94,4 +94,19 @@ class DataController {
         $userModel->deleteTask($idTask);
         echo json_encode(['message' => 'Task deleted']);
     }
+
+    public function deleteList(int $idList) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isListOwner($idList)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $userModel->deleteList($idList);
+        echo json_encode(['message' => 'List deleted']);
+    }
 }

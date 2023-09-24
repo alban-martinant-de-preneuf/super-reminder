@@ -172,4 +172,12 @@ class UserModel extends DbConnection
         $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
         $statment->execute();
     }
+
+    public function deleteList(int $idList): void
+    {
+        $sqlQuery = "DELETE FROM list WHERE id = :id_list";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+    }
 }
