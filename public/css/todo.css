@@ -1,0 +1,79 @@
+.list {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 5px;
+    max-width: 300px;
+}
+
+.list h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    margin-bottom: 8px;
+}
+
+.add_task_form,
+#add_list_form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.add_task_form input[type="text"],
+#add_list_form input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+    flex: 1;
+}
+
+.add_task_form button,
+#add_list_form button {
+    border: none;
+    padding: 0;
+    background-color: initial;
+}
+
+.list_tasks {
+    list-style: none;
+    padding: 0;
+}
+
+.list_tasks li {
+    padding: 8px 16px;
+    border-bottom: 1px solid #ccc;
+}
+
+.add_task_icon {
+    font-size: 2.5em;
+    color: #FF9191;
+    cursor: pointer;
+}
+
+.add_task_icon:hover {
+    color: #C66E6E;
+}
+
+i {
+    font-size: 1.5em;
+    color: #999;
+    cursor: pointer;
+}
+
+.completed i.fa-check {
+    color: #FF9191;
+}
+
+.completed span {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
