@@ -97,7 +97,7 @@ class UserModel extends DbConnection
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
         $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
         $statment->execute();
-        
+
         return [
             'id' => $this->pdo->lastInsertId(),
             'title' => $title,
@@ -122,11 +122,61 @@ class UserModel extends DbConnection
         return false;
     }
 
-    public function createTask(string $title, int $idList): void
+    public function createTask(string $title, int $idList): array
     {
         $sqlQuery = "INSERT INTO task (title, id_list) VALUES (:title, :id_list)";
         $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':title', $title, \PDO::PARAM_STR);
+        $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
+        $statment->execute();
+
+        return [
+            'id' => (int) $this->pdo->lastInsertId(),
+            'title' => $title,
+            'state' => 'pending',
+            'id_list' => $idList
+        ];
+    }
+
+    public function updateTaskState(int $idTask, string $state): void
+    {
+        $sqlQuery = "UPDATE task SET state = :state WHERE id = :id_task";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':state', $state, \PDO::PARAM_INT);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
+        $statment->execute();
+    }
+
+    public function isTaskOwner(int $idTask): bool
+    {
+        $sqlQuery = ("SELECT COUNT(*)
+            FROM task
+            INNER JOIN list ON task.id_list = list.id
+            WHERE list.id_user = :id_user AND task.id = :id_task"
+        );
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_user', $this->user->getId(), \PDO::PARAM_INT);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
+        $statment->execute();
+        $result = $statment->fetch(\PDO::FETCH_COLUMN);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    public function deleteTask(int $idTask): void
+    {
+        $sqlQuery = "DELETE FROM task WHERE id = :id_task";
+        $statment = $this->pdo->prepare($sqlQuery);
+        $statment->bindValue(':id_task', $idTask, \PDO::PARAM_INT);
+        $statment->execute();
+    }
+
+    public function deleteList(int $idList): void
+    {
+        $sqlQuery = "DELETE FROM list WHERE id = :id_list";
+        $statment = $this->pdo->prepare($sqlQuery);
         $statment->bindValue(':id_list', $idList, \PDO::PARAM_INT);
         $statment->execute();
     }

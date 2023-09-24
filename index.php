@@ -61,7 +61,7 @@ $router->map('GET', '/list_page', function () {
     $viewController->getListPage();
 }, 'list_page');
 
-$router->map('GET','/lists', function () {
+$router->map('GET', '/lists', function () {
     $dataController = new DataController();
     $dataController->getUserLists();
 }, 'lists');
@@ -80,6 +80,22 @@ $router->map('POST', '/tasks/add', function () {
     $dataController = new DataController();
     $dataController->addTask($_POST['title'], $_POST['list_id']);
 }, 'addTask');
+
+$router->map('POST', '/tasks/changestate', function () {
+    $task = json_decode(file_get_contents('php://input'), true);
+    $dataController = new DataController();
+    $dataController->changeTaskState($task);
+}, 'changeTaskState');
+
+$router->map('DELETE', '/tasks/delete/[i:id]', function ($id) {
+    $dataController = new DataController();
+    $dataController->deleteTask($id);
+}, 'deleteTask');
+
+$router->map('DELETE', '/lists/delete/[i:id]', function ($id) {
+    $dataController = new DataController();
+    $dataController->deleteList($id);
+}, 'deleteList');
 
 // for testing 
 

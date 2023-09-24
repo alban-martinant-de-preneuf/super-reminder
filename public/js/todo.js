@@ -22,6 +22,14 @@ async function displayList(list) {
     listDiv.classList.add('list')
     listDiv.id = "list_" + list.id
 
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('fa-solid', 'fa-xmark')
+    deleteIcon.addEventListener('click', () => {
+        deleteList(list.id, listDiv)
+    })
+
+    listDiv.appendChild(deleteIcon)
+
     const listTitle = document.createElement('h2')
     listTitle.textContent = list.title
     listDiv.appendChild(listTitle)
@@ -30,6 +38,7 @@ async function displayList(list) {
 
     const ulElement = document.createElement('ul')
     ulElement.id = "ul_" + list.id
+    ulElement.classList.add('list_tasks')
     listDiv.appendChild(ulElement)
 
     listContainer.prepend(listDiv)
@@ -39,11 +48,73 @@ async function displayList(list) {
     fillWithLiTasks(tasks, ulElement)
 }
 
+async function deleteList(listId, listDiv) {
+    const res = await fetch('/super-reminder/lists/delete/' + listId, {
+        method: 'DELETE'
+    })
+    const data = await res.json()
+    if (data.message === 'List deleted') {
+        listDiv.remove()
+    }
+}
+
 function fillWithLiTasks(tasks, ulElement) {
     tasks.forEach(task => {
-        const liElement = document.createElement('li')
-        liElement.textContent = task.title
-        ulElement.appendChild(liElement)
+        ulElement.appendChild(createLiTask(task))
+    })
+}
+
+function createLiTask(task) {
+    const liElement = document.createElement('li')
+    liElement.id = "task_" + task.id
+    liElement.classList.add('task')
+    if (task.state === 'completed') {
+        liElement.classList.add('completed')
+    }
+
+    const checkIcon = document.createElement('i')
+    checkIcon.classList.add('fa-solid', 'fa-check')
+    liElement.appendChild(checkIcon)
+
+    const spanElement = document.createElement('span')
+    spanElement.textContent = task.title
+    liElement.appendChild(spanElement)
+
+    const trashIcon = document.createElement('i')
+    trashIcon.classList.add('fa-regular', 'fa-trash-can')
+    liElement.appendChild(trashIcon)
+
+    addTaskEventListeners(liElement, task)
+
+    return liElement
+}
+
+function addTaskEventListeners(liElement, task) {
+    // check task
+    liElement.querySelector('.fa-check').addEventListener('click', async () => {
+        const res = await fetch('/super-reminder/tasks/changestate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task)
+        })
+        const data = await res.json()
+        if (data.state === 'completed') {
+            liElement.classList.add('completed')
+            task.state = 'completed'
+        } else if (data.state === 'pending') {
+            liElement.classList.remove('completed')
+            task.state = 'pending'
+        }
+    })
+    // delete task
+    liElement.querySelector('.fa-trash-can').addEventListener('click', async () => {
+        const res = await fetch('/super-reminder/tasks/delete/' + task.id, {
+            method: 'DELETE'
+        })
+        const data = await res.json()
+        if (data.message === 'Task deleted') {
+            liElement.remove()
+        }
     })
 }
 
@@ -56,7 +127,7 @@ function addTaskForm(listId) {
     inputTitle.type = "text"
     inputTitle.name = "title"
     inputTitle.id = "title"
-    inputTitle.placeholder = "Title"
+    inputTitle.placeholder = "New task"
     form.appendChild(inputTitle)
 
     const inputListId = document.createElement('input')
@@ -69,7 +140,7 @@ function addTaskForm(listId) {
 
     const submitBtn = document.createElement('button')
     submitBtn.type = "submit"
-    submitBtn.innerHTML = '<i class="fa-solid fa-circle-plus"></i>'
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-plus add_task_icon"></i>'
     form.appendChild(submitBtn)
 
     form.addEventListener('submit', async (e) => {
@@ -82,9 +153,7 @@ function addTaskForm(listId) {
         const data = await res.json()
         if (data.message === 'Task added') {
             const ulElement = document.getElementById('ul_' + listId)
-            const liElement = document.createElement('li')
-            liElement.textContent = data.title
-            ulElement.appendChild(liElement)
+            ulElement.appendChild(createLiTask(data.task))
         }
     })
 

@@ -54,10 +54,59 @@ class DataController {
             echo json_encode(['message' => 'Not authorized']);
             die();
         }
-        $userModel->createTask($title, $idList);
+        $task = $userModel->createTask($title, $idList);
         echo json_encode([
             'message' => 'Task added',
-            'title' => $title
+            'task' => $task
         ]);
+    }
+
+    public function changeTaskState(array $task) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isTaskOwner($task['id'])) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $state = $task['state'] === 'pending' ? 'completed' : 'pending';
+        $userModel->updateTaskState($task['id'], $state);
+        echo json_encode([
+            'message' => 'State changed',
+            'state' => $state
+        ]);
+    }
+
+    public function deleteTask(int $idTask) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isTaskOwner($idTask)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $userModel->deleteTask($idTask);
+        echo json_encode(['message' => 'Task deleted']);
+    }
+
+    public function deleteList(int $idList) : void {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['message' => 'Not connected']);
+            die();
+        }
+        $user = unserialize($_SESSION['user']);
+        $userModel = new UserModel($user);
+        if (!$userModel->isListOwner($idList)) {
+            echo json_encode(['message' => 'Not authorized']);
+            die();
+        }
+        $userModel->deleteList($idList);
+        echo json_encode(['message' => 'List deleted']);
     }
 }

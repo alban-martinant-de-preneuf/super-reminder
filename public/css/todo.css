@@ -5,6 +5,7 @@
     padding: 16px;
     margin: 5px;
     max-width: 300px;
+    position: relative;
 }
 
 .list h2 {
@@ -76,4 +77,12 @@ i {
     display: flex;
     justify-content: space-between;
     align-items: end;
+}
+
+.fa-xmark {
+    color: #999;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
 }
