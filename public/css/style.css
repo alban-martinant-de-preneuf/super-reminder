@@ -52,6 +52,7 @@ nav a {
     font-weight: bold;
     padding: 24px;
     border-radius: 12px;
+    white-space: nowrap;
 }
 
 nav a .material-symbols-outlined {
