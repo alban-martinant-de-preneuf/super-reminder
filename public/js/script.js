@@ -73,9 +73,20 @@ async function activeSubmit(form, route) {
     })
 }
 
-getRegisterFormBtn?.addEventListener('click', getRegisterForm)
-getLoginFormBtn?.addEventListener('click', getLoginForm)
-decoBtn?.addEventListener('click', logout)
+getRegisterFormBtn?.addEventListener('click', (e) => {
+    e.preventDefault()
+    getRegisterForm(e)
+})
+
+getLoginFormBtn?.addEventListener('click', (e) => {
+    e.preventDefault()
+    getLoginForm(e)
+})
+
+decoBtn?.addEventListener('click', (e) => {
+    e.preventDefault()
+    logout(e)
+})
 
 todoBtn?.addEventListener('click', (e) => {
     e.preventDefault()
