@@ -97,13 +97,6 @@ $router->map('DELETE', '/lists/delete/[i:id]', function ($id) {
     $dataController->deleteList($id);
 }, 'deleteList');
 
-// for testing 
-
-$router->map('GET', '/test', function () {
-    // $dataController = new DataController();
-    // $dataController->getUserTaskLists();
-}, 'test');
-
 // match current request url
 $match = $router->match();
 // call closure or throw 404 status`
