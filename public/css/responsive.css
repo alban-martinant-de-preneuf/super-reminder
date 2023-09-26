@@ -1,0 +1,27 @@
+@media screen and (min-width: 700px) {
+
+    body,
+    html {
+        flex-direction: row;
+        position: relative;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+}
+
+@media screen and (min-width: 1800px) {
+    #wrapper {
+        max-width: 70%;
+    }
+}
