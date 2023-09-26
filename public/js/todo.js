@@ -146,6 +146,9 @@ function addTaskForm(listId) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault()
         const formData = new FormData(form)
+        if (formData.get('title') === '') {
+            return
+        }
         const res = await fetch('/super-reminder/tasks/add', {
             method: 'POST',
             body: formData,
@@ -154,6 +157,7 @@ function addTaskForm(listId) {
         if (data.message === 'Task added') {
             const ulElement = document.getElementById('ul_' + listId)
             ulElement.appendChild(createLiTask(data.task))
+            inputTitle.value = ''
         }
     })
 
@@ -163,6 +167,9 @@ function addTaskForm(listId) {
 async function addList(e) {
     e.preventDefault()
     const formdata = new FormData(formAddList)
+    if (formdata.get('title') === '') {
+        return
+    }
     const res = await fetch('/super-reminder/lists/add', {
         method: 'POST',
         body: formdata
@@ -170,6 +177,7 @@ async function addList(e) {
     const data = await res.json()
     if (data.message === 'List added') {
         displayList(data.list)
+        document.getElementById('list_title').value = ''
     }
 }
 
