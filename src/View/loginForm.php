@@ -12,7 +12,7 @@
         <input name="password" type="password" id="registerPassword" placeholder="Enter your password"><br><br>
 
         <p id="message"></p>
-        <button id="login_submit">Login</button>
+        <input type="submit" id="login_submit" value="Login"></input>
 
     </form>
 </div>

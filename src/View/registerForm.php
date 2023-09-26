@@ -15,9 +15,9 @@
     <label for="registerPassword">Password:</label>
     <input name="password" type="password" id="registerPassword" placeholder="Enter your password"><br><br>
 
-    <label for="passwordComfirmation">Password:</label>
-    <input name="password2" type="password" id="passwordComfirmation" placeholder="Comfirme your password"><br><br>
+    <label for="passwordComfirmation">Password comfirmation:</label>
+    <input name="password2" type="password" id="passwordComfirmation" placeholder="Comfirm your password"><br><br>
 
     <p id="message"></p>
-    <button class="submit" id="register_submit">Register</button>
+    <input type="submit" id="register_submit" value="Register"></input>
 </form>

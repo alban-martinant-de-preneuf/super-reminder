@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +11,7 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/super-reminder/public/css/style.css">
-    
+    <link rel="stylesheet" href="/super-reminder/public/css/todo.css">
 
     <script src="/super-reminder/public/js/script.js" defer></script>
     <script src="https://kit.fontawesome.com/247a482759.js" crossorigin="anonymous"></script>
@@ -19,12 +20,26 @@
 
 <body>
     <?php require_once("includes/header.php"); ?>
-    
+
     <div id="wrapper">
-       
-             <h1></h1>
-            
+
+        <h1> Welcome
+            <b>
+                <?php
+                if (isset($_SESSION['user'])) {
+                    $user = unserialize($_SESSION['user']);
+                    $fullName = $user->getFirstname() . " " . $user->getLastname();
+                    echo $fullName;
+                } else {
+                    echo "to super-reminder";
+                }
+                ?>
+            </b>
+        </h1>
         
+        <img src="/super-reminder/public/img/todo3.gif" id="girl" alt="Home Gif">
+
     </div>
 </body>
+
 </html>
