@@ -1,7 +1,7 @@
-#list_container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+#list_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
 }
 
 .list,
@@ -10,8 +10,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 16px;
-    margin: 5px auto;
-    max-width: 300px;
     position: relative;
 }
 
@@ -70,8 +68,7 @@
     color: #C66E6E;
 }
 
-.fa-check
- {
+.fa-check {
     font-size: 1.5em;
     color: #c2c2c2;
     cursor: pointer;

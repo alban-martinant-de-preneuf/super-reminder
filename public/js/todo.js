@@ -77,6 +77,7 @@ function createLiTask(task) {
     liElement.appendChild(checkIcon)
 
     const spanElement = document.createElement('span')
+    spanElement.classList.add('task_title')
     spanElement.textContent = task.title
     liElement.appendChild(spanElement)
 
