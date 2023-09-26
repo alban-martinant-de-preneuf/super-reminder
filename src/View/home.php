@@ -29,7 +29,7 @@
                 <?php
                 if (isset($_SESSION['user'])) {
                     $user = unserialize($_SESSION['user']);
-                    $fullName = $user->getFirstname() . " " . $user->getLastname();
+                    $fullName = $user->getFirstname();
                     echo $fullName;
                 } else {
                     echo "to super-reminder";
@@ -38,7 +38,7 @@
             </b>
         </h1>
         
-        <img src="/super-reminder/public/img/todo3.gif" id="girl" alt="Home Gif">
+        <img src="/super-reminder/public/img/tdl.png" id="home_img" alt="Home Gif">
 
     </div>
 </body>
